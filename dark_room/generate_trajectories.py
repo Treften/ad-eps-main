@@ -13,14 +13,14 @@ from algorithms.optimal_agent import OptimalAgent
 from utils.misc import set_seed, train_test_goals
 
 
-# @dataclass
-# class Config:
-#     seed: int = 0
-#     savedir: str = 'trajectories/'
-#     num_train_goals: int = 80
-#     env_name: str = 'DarkRoom-v0'
-#     hist_per_goal: int = 5000
-#     max_perf: float = 1.0
+@dataclass
+class Config:
+    seed: int = 0
+    savedir: str = 'trajectories/'
+    num_train_goals: int = 80
+    env_name: str = 'DarkRoom-v0'
+    hist_per_goal: int = 5000
+    max_perf: float = 1.0
 
 
 def generate_trajectory(
