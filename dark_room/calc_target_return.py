@@ -4,7 +4,7 @@ from multiprocessing import Pool
 import gymnasium as gym
 import numpy as np
 from tqdm import tqdm
-
+from functools import partial
 from algorithms.optimal_agent import OptimalAgent
 
 
