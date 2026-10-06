@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 from algorithms.optimal_agent import OptimalAgent
 from utils.misc import set_seed, train_test_goals
-
+import envs.darkroom
 
 # @dataclass
 # class Config:

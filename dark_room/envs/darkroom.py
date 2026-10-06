@@ -4,7 +4,7 @@ from typing import Optional
 import gymnasium as gym
 import numpy as np
 from gymnasium import spaces
-
+from gymnasium.envs.registration import register
 # gym warnings are annoying
 warnings.filterwarnings("ignore")
 
@@ -65,3 +65,8 @@ class DarkRoom(gym.Env):
             grid[self.goal_pos[0], self.goal_pos[1]] = (255, 0, 0)
             grid[int(self.agent_pos[0]), int(self.agent_pos[1])] = (0, 255, 0)
             return grid
+
+register(
+    id="DarkRoom-v0",
+    entry_point="envs.darkroom:DarkRoom",
+)
