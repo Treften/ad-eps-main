@@ -35,10 +35,10 @@ class TrainConfig:
     name: str = "BTD-AD"
     # model params
     embedding_dim: int = 64
-    hidden_dim: int = 512
+    hidden_dim: int = 256
     num_layers: int = 4
     num_heads: int = 4
-    seq_len: int = 25
+    seq_len: int = 80
     attention_dropout: float = 0.5
     residual_dropout: float = 0.1
     embedding_dropout: float = 0.3
