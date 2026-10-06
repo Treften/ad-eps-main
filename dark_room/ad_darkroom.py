@@ -369,7 +369,7 @@ def train(config: TrainConfig):
         train_goals, config.env_name, eps=(1 - config.max_perf)
     )
 
-    wandb.init(project=config.project, group=config.group, name=config.name, config=asdict(config))
+    #wandb.init(project=config.project, group=config.group, name=config.name, config=asdict(config))
     dataset = SequenceDataset(
         runs_path=config.learning_histories_path,
         seq_len=config.seq_len,
@@ -458,7 +458,7 @@ def train(config: TrainConfig):
                 t = actions.flatten()
                 accuracy = torch.sum(a == t) / (config.batch_size * config.seq_len)
 
-            wandb.log(
+            '''wandb.log(
                 {
                     "loss": loss.item(),
                     "accuracy": accuracy,
@@ -466,7 +466,7 @@ def train(config: TrainConfig):
                     "lr": scheduler.get_last_lr()[0],
                 },
                 step=global_step,
-            )
+            )'''
 
             if global_step % config.eval_every == 0:
                 model.eval()
@@ -516,7 +516,7 @@ def train(config: TrainConfig):
                 )
 
                 model.train()
-                wandb.log(
+                '''wandb.log(
                     {
                         "eval/train_goals/mean_return": np.mean(
                             [h[-1] for h in eval_info_train.values()]
@@ -541,7 +541,7 @@ def train(config: TrainConfig):
                         "epoch": epoch,
                     },
                     step=global_step,
-                )
+                )'''
                 if config.checkpoints_path is not None:
                     torch.save(
                         model.state_dict(),
