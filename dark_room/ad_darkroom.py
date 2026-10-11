@@ -474,8 +474,8 @@ def train(config: TrainConfig):
                 step=global_step,
             )'''
             if global_step % 500 == 0:
-                logger.report_scalar(title="Training", series="loss", value=loss.item(), iteration=step)
-                logger.report_scalar(title="Training", series="accuracy", value=accuracy, iteration=step)
+                logger.report_scalar(title="Training", series="loss", value=loss.item(), iteration=global_step)
+                logger.report_scalar(title="Training", series="accuracy", value=accuracy, iteration=global_step)
             if global_step % config.eval_every == 0:
                 model.eval()
                 eval_info, debug_info = evaluate_in_context(
