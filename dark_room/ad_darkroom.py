@@ -64,8 +64,8 @@ class TrainConfig:
     train_seed: int = 10
     eval_seed: int = 42
     # data
-    num_train_goals: int = 5
-    hist_per_goal: int = 100
+    num_train_goals: int = 65
+    hist_per_goal: int = 25000
     max_perf: float = 0.5
 
     def __post_init__(self):
