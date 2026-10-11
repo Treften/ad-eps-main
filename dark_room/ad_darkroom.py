@@ -10,6 +10,7 @@ import pyrallis
 import torch
 import torch.nn as nn
 import wandb
+from clearml import Task, Logger
 from dataclasses import asdict, dataclass
 from gymnasium.vector import SyncVectorEnv
 from torch.nn import functional as F  # noqa
@@ -351,6 +352,11 @@ def split_info_debug(eval_info, debug_info, train_goals, test_goals):
 
 @pyrallis.wrap()
 def train(config: TrainConfig):
+    task = Task.init(
+            project_name='New_dark_room', 
+            task_name='InC', 
+            tags=['dark_room'])
+    logger = task.get_logger() 
     set_seed(config.train_seed)
 
     max_eps = PERF_TO_EPS[config.max_perf]
@@ -467,7 +473,9 @@ def train(config: TrainConfig):
                 },
                 step=global_step,
             )'''
-
+            if global_step % 500 == 0:
+                logger.report_scalar(title="Training", series="loss", value=loss.item(), iteration=step)
+                logger.report_scalar(title="Training", series="accuracy", value=accuracy, iteration=step)
             if global_step % config.eval_every == 0:
                 model.eval()
                 eval_info, debug_info = evaluate_in_context(
@@ -542,6 +550,10 @@ def train(config: TrainConfig):
                     },
                     step=global_step,
                 )'''
+                logger.report_scalar(title="Eval", series="train_mean_return", value=np.mean([h[-1] for h in eval_info_train.values()]), iteration=global_step)
+                logger.report_scalar(title="Training", series="train_median_return", value=np.median([h[-1] for h in eval_info_train.values()]), iteration=global_step)
+                logger.report_scalar(title="Eval", series="test_mean_return", value=np.mean([h[-1] for h in eval_info_test.values()]), iteration=global_step)
+                logger.report_scalar(title="Training", series="test_median_return", value=np.median([h[-1] for h in eval_info_test.values()]), iteration=global_step)
                 if config.checkpoints_path is not None:
                     torch.save(
                         model.state_dict(),
