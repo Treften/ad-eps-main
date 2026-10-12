@@ -36,7 +36,7 @@ class TrainConfig:
     name: str = "BTD-AD"
     # model params
     embedding_dim: int = 64
-    hidden_dim: int = 512
+    hidden_dim: int = 256
     num_layers: int = 4
     num_heads: int = 4
     seq_len: int = 80
@@ -51,7 +51,7 @@ class TrainConfig:
     weight_decay: float = 0.0
     clip_grad: Optional[float] = 1.0
     subsample: int = 1
-    batch_size: int = 512
+    batch_size: int = 128
     num_updates: int = 300_000
     num_workers: int = 4
     label_smoothing: float = 0.0
