@@ -255,8 +255,12 @@ class ADTransformer(nn.Module):
 
 @torch.no_grad()
 def evaluate_in_context(env_name, model, goals, eval_episodes, seed=None):
+    vector_kwargs = {}
+    if hasattr(gym.vector, "AutoresetMode"):
+        vector_kwargs["autoreset_mode"] = gym.vector.AutoresetMode.SAME_STEP
     vec_env = SyncVectorEnv(
-        [lambda goal=goal: gym.make(env_name, goal_pos=goal) for goal in goals]
+        [lambda goal=goal: gym.make(env_name, goal_pos=goal) for goal in goals],
+        **vector_kwargs,
     )
 
     states = torch.zeros(
@@ -550,10 +554,12 @@ def train(config: TrainConfig):
                     },
                     step=global_step,
                 )'''
-                logger.report_scalar(title="Eval", series="train_mean_return", value=np.mean([h[-1] for h in eval_info_train.values()]), iteration=global_step)
-                logger.report_scalar(title="Training", series="train_median_return", value=np.median([h[-1] for h in eval_info_train.values()]), iteration=global_step)
-                logger.report_scalar(title="Eval", series="test_mean_return", value=np.mean([h[-1] for h in eval_info_test.values()]), iteration=global_step)
-                logger.report_scalar(title="Training", series="test_median_return", value=np.median([h[-1] for h in eval_info_test.values()]), iteration=global_step)
+                train_goal_means = [np.mean(returns) for returns in eval_info_train.values() if returns]
+                test_goal_means = [np.mean(returns) for returns in eval_info_test.values() if returns]
+                logger.report_scalar(title="Eval", series="train_mean_return", value=np.mean(train_goal_means), iteration=global_step)
+                logger.report_scalar(title="Eval", series="train_median_return", value=np.median(train_goal_means), iteration=global_step)
+                logger.report_scalar(title="Eval", series="test_mean_return", value=np.mean(test_goal_means), iteration=global_step)
+                logger.report_scalar(title="Eval", series="test_median_return", value=np.median(test_goal_means), iteration=global_step)
                 if config.checkpoints_path is not None:
                     torch.save(
                         model.state_dict(),
