@@ -370,13 +370,13 @@ def train(config: TrainConfig):
         savedir=config.learning_histories_path,
         num_train_goals=config.num_train_goals,
         hist_per_goal=config.hist_per_goal,
-        max_perf=max_eps,
+        max_perf=1.0 - max_eps,
         seed=config.eval_seed,
     )
 
     max_optimal_return = calculate_eps_reward(train_goals, config.env_name, eps=0)
     max_perf_return = calculate_eps_reward(
-        train_goals, config.env_name, eps=(1 - config.max_perf)
+        train_goals, config.env_name, eps=max_eps
     )
 
     #wandb.init(project=config.project, group=config.group, name=config.name, config=asdict(config))
