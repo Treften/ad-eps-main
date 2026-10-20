@@ -364,7 +364,7 @@ def train(config: TrainConfig):
     set_seed(config.train_seed)
 
     max_eps = PERF_TO_EPS[config.max_perf]
-    print(config.env_name)
+    print(config)
     train_goals, test_goals = generate_data(
         env_name=config.env_name,
         savedir=config.learning_histories_path,
