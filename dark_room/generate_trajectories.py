@@ -65,6 +65,8 @@ def generate_trajectory(
             state = new_state
             eps = max((1 - max_perf), eps - eps_diff)
 
+        if i % 500 == 0:
+            print(eps)
         if debug and i % 500 == 0:
             tqdm.write(
                 f" EPS: {eps:.3f}, last 10 returns: {np.mean(episode_rewards[-10:])}"
