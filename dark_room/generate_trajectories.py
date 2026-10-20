@@ -65,8 +65,7 @@ def generate_trajectory(
             state = new_state
             eps = max((1 - max_perf), eps - eps_diff)
 
-        if i % 500 == 0:
-            print(eps)
+
         if debug and i % 500 == 0:
             tqdm.write(
                 f" EPS: {eps:.3f}, last 10 returns: {np.mean(episode_rewards[-10:])}"
@@ -114,7 +113,7 @@ def generate_data(env_name, savedir, num_train_goals, hist_per_goal, max_perf, s
         savedir=savedir,
         n_episodes=hist_per_goal,
         max_perf=max_perf,
-        debug=False,
+        debug=True,
     )
     with mp.Pool(processes=os.cpu_count()) as pool:
         # with mp.Pool(processes=1) as pool:
