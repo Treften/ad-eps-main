@@ -113,7 +113,7 @@ def generate_data(env_name, savedir, num_train_goals, hist_per_goal, max_perf, s
         savedir=savedir,
         n_episodes=hist_per_goal,
         max_perf=max_perf,
-        debug=True,
+        debug=False,
     )
     with mp.Pool(processes=os.cpu_count()) as pool:
         # with mp.Pool(processes=1) as pool:
